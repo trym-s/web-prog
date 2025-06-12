@@ -1,19 +1,20 @@
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute.jsx'; 
 import Layout from './components/Layout'; // Import the Layout component
 import LoginPage from './pages/Login';
 import BookListPage from './pages/BookList'; // Import the new page
+import MyCheckoutsPage from './pages/MyCheckoutsPage.jsx'; 
 
 function App() {
   return (
     <Routes>
-      {/* Route that does NOT use the layout */}
       <Route path="/login" element={<LoginPage />} />
 
-      {/* Routes that USE the layout */}
-      <Route element={<Layout />}>
-        <Route path="/" element={<BookListPage />} />
-        {/* Add other pages that should have the navbar here */}
-        {/* <Route path="/students" element={<StudentsPage />} /> */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<BookListPage />} />
+          <Route path="/my-borrowed-books" element={<MyCheckoutsPage />} /> {/* 2. Yeni rotayı ekle */}
+        </Route>
       </Route>
     </Routes>
   );

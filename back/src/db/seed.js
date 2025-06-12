@@ -72,8 +72,8 @@ async function seedStudents() {
  */
 async function seedBooks() {
   const dummyBooks = [
-    { title: 'Yerdeniz Büyücüsü', author: 'Ursula K. Le Guin', description: 'Fantastik bir klasik.', page_number: 240, cover_image_url: 'https://i.dr.com.tr/cache/600x600-0/originals/0000000186001-1.jpg', isbn: '9786053142279', quantity: 3, available_quantity: 3 },
-    { title: 'Dune', author: 'Frank Herbert', description: 'Bilim kurgu başyapıtı.', page_number: 712, cover_image_url: 'https://i.dr.com.tr/cache/600x600-0/originals/0001893382001-1.jpg', isbn: '9786057911639', quantity: 5, available_quantity: 5 },
+    { title: 'Yerdeniz Büyücüsü', author: 'Ursula K. Le Guin', description: 'Fantastik bir klasik.', page_number: 240, cover_image_url: 'https://img.kitapyurdu.com/v1/getImage/fn:11891875/wh:true/wi:220', isbn: '9786053142279', quantity: 3, available_quantity: 3 },
+    { title: 'Dune', author: 'Frank Herbert', description: 'Bilim kurgu başyapıtı.', page_number: 712, cover_image_url: 'https://img.kitapyurdu.com/v1/getImage/fn:11494736/wh:true/wi:220', isbn: '9786057911639', quantity: 5, available_quantity: 5 },
     { title: '1984', author: 'George Orwell', description: 'Distopik bir roman.', page_number: 328, cover_image_url: 'https://i.dr.com.tr/cache/600x600-0/originals/0000000064038-1.jpg', isbn: '9789750718534', quantity: 2, available_quantity: 2 },
   ];
 

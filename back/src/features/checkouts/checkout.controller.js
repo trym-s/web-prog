@@ -1,4 +1,3 @@
-
 const Checkout = require('./checkout.model.js');
 const Book = require('../books/book.model.js'); // We need book model for stock control
 
@@ -43,6 +42,23 @@ const createCheckout = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ message: 'Error creating checkout', error: error.message });
+  }
+};
+
+const getMyCheckouts = async (req, res) => {
+  // req.user comes from our verifyToken middleware
+  const studentId = req.user.studentId;
+
+  if (!studentId) {
+    // This case might happen for an admin user
+    return res.status(400).json({ message: 'User is not associated with a student.' });
+  }
+
+  try {
+    const checkouts = await Checkout.findByStudentId(studentId);
+    res.status(200).json(checkouts);
+  } catch (error) {
+    res.status(500).json({ message: 'Error getting your checkouts', error: error.message });
   }
 };
 

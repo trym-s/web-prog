@@ -4,15 +4,21 @@ const Book = {
   // create, getById, update, remove functions remain the same...
 
   create: (data) => {
-    const { title, author, isbn, quantity, available_quantity } = data;
-    const sql = `INSERT INTO Books (title, author, isbn, quantity, available_quantity) VALUES (?, ?, ?, ?, ?)`;
+    // Tüm yeni alanları (description, page_number, cover_image_url) data nesnesinden alıyoruz
+    const { title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity } = data;
+    const sql = `
+      INSERT INTO Books (title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
     return new Promise((resolve, reject) => {
-      db.run(sql, [title, author, isbn, quantity, available_quantity], function (err) {
+      // Tüm yeni alanları sorguya parametre olarak ekliyoruz
+      db.run(sql, [title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity], function (err) {
         if (err) reject(err);
         else resolve(this.lastID);
       });
     });
   },
+
 
   getById: (id) => {
     const sql = 'SELECT * FROM Books WHERE id = ?';
@@ -24,27 +30,20 @@ const Book = {
     });
   },
 
-  update: (id, data) => {
-    const { title, author, isbn, quantity, available_quantity } = data;
-    const sql = `UPDATE Books SET title = ?, author = ?, isbn = ?, quantity = ?, available_quantity = ? WHERE id = ?`;
+   update: (id, data) => {
+    const { title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity } = data;
+    const sql = `
+      UPDATE Books 
+      SET title = ?, author = ?, description = ?, page_number = ?, cover_image_url = ?, isbn = ?, quantity = ?, available_quantity = ? 
+      WHERE id = ?
+    `;
     return new Promise((resolve, reject) => {
-      db.run(sql, [title, author, isbn, quantity, available_quantity, id], function (err) {
+      db.run(sql, [title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity, id], function (err) {
         if (err) reject(err);
         else resolve(this.changes);
       });
     });
   },
-
-  remove: (id) => {
-    const sql = 'DELETE FROM Books WHERE id = ?';
-    return new Promise((resolve, reject) => {
-      db.run(sql, [id], function (err) {
-        if (err) reject(err);
-        else resolve(this.changes);
-      });
-    });
-  },
-
 
   // MODIFIED FUNCTION
   getAll: (options = {}) => {

@@ -3,27 +3,34 @@ import { Title, TextInput, Card, SimpleGrid, Text, Image, Modal, Button, Group, 
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useAuth } from '../context/AuthContext';
-import useDebounce from '../hooks/useDebounce'; // Debounce hook'umuzu import ediyoruz
+import useDebounce from '../hooks/useDebounce';
 
 function BookListPage() {
+  // --- STATE MANAGEMENT ---
+  // Data states
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
+  // Search states
   const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 500); // Arama terimini 500ms geciktir
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // Debounce search input
 
+  // Modal states
   const [selectedBook, setSelectedBook] = useState(null);
   const [opened, { open, close }] = useDisclosure(false);
+  
+  // Authentication context
   const { user, token } = useAuth();
 
-  // useEffect artık normal arama terimi yerine GECİKTİRİLMİŞ olana bağlı
+  // --- DATA FETCHING ---
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
       setError(null);
-      // API isteği için geciktirilmiş arama terimini kullan
+      // Use the debounced search term for API calls
       const apiUrl = `http://localhost:3000/api/books?search=${debouncedSearchTerm}`;
+      
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('Kitaplar getirilirken bir hata oluştu.');
@@ -37,8 +44,9 @@ function BookListPage() {
     };
     
     fetchBooks();
-  }, [debouncedSearchTerm]); // <-- Kritik: Bağımlılık burada!
+  }, [debouncedSearchTerm]); // Re-run only when the debounced search term changes
 
+  // --- HANDLER FUNCTIONS ---
   const handleCardClick = (book) => {
     setSelectedBook(book);
     open();
@@ -52,7 +60,7 @@ function BookListPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`, // Send token for authentication
         },
         body: JSON.stringify({ studentId: user.studentId, bookId: selectedBook.id }),
       });
@@ -66,8 +74,7 @@ function BookListPage() {
         color: 'green',
       });
 
-      // Veriyi yeniden çekerek listeyi güncellemek yerine,
-      // sadece ödünç alınan kitabın state'ini güncelleyebiliriz (daha performanslı).
+      // Update the book's quantity locally for better performance instead of a full refetch
       setBooks(currentBooks => 
         currentBooks.map(b => 
           b.id === selectedBook.id ? { ...b, available_quantity: b.available_quantity - 1 } : b
@@ -84,11 +91,12 @@ function BookListPage() {
     }
   };
 
+  // --- RENDER ---
   return (
     <>
       <Title order={2} mb="lg">Kitap Kataloğu</Title>
       
-      {/* ARAMA KUTUSU */}
+      {/* SEARCH INPUT */}
       <TextInput
         placeholder="Kitap veya yazar ara..."
         value={searchTerm}
@@ -96,11 +104,11 @@ function BookListPage() {
         mb="xl"
       />
 
-      {/* DETAY POPUP'I (MODAL) */}
-      <Modal opened={opened} onClose={close} title={selectedBook?.title} size="lg">
+      {/* BOOK DETAIL MODAL (POPUP) */}
+      <Modal opened={opened} onClose={close} title={selectedBook?.title} size="lg" centered>
         {selectedBook && (
           <div>
-            <Image src={selectedBook.cover_image_url} height={200} fit="contain" mb="md" />
+            <Image src={selectedBook.cover_image_url} height={200} fit="contain" mb="md" fallbackSrc="https://via.placeholder.com/300x450?text=Kapak+Yok" />
             <Title order={3}>{selectedBook.title}</Title>
             <Text size="md" color="dimmed" mb="sm">{selectedBook.author}</Text>
             <Badge color={selectedBook.available_quantity > 0 ? 'green' : 'red'} variant="light">
@@ -110,9 +118,11 @@ function BookListPage() {
             <Text size="xs" color="dimmed" mt="lg">Sayfa Sayısı: {selectedBook.page_number || 'Belirtilmemiş'}</Text>
             
             <Group position="right" mt="xl">
+              <Button onClick={close} variant="default">Kapat</Button>
               <Button
-                disabled={selectedBook.available_quantity < 1 || !user}
+                disabled={selectedBook.available_quantity < 1 || !user || user.role !== 'student'}
                 onClick={handleCheckout}
+                title={user?.role !== 'student' ? 'Sadece öğrenciler ödünç alabilir' : ''}
               >
                 Ödünç Al
               </Button>
@@ -121,7 +131,7 @@ function BookListPage() {
         )}
       </Modal>
 
-      {/* KİTAP LİSTESİ */}
+      {/* BOOK LIST GRID */}
       {loading && <p>Yükleniyor...</p>}
       {error && <p>Hata: {error}</p>}
       <SimpleGrid cols={4} mt="md">
@@ -136,14 +146,21 @@ function BookListPage() {
             withBorder 
             key={book.id} 
             onClick={() => handleCardClick(book)}
-            style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
+            style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
             component="button"
           >
-            <Card.Section>
-              <Image src={book.cover_image_url} height={250} alt={book.title} />
-            </Card.Section>
-            <Text weight={500} mt="md" lineClamp={1}>{book.title}</Text>
-            <Text size="sm" color="dimmed">{book.author}</Text>
+            <div>
+              <Card.Section>
+                <Image
+                  src={book.cover_image_url}
+                  height={250}
+                  alt={book.title}
+                  fallbackSrc="https://via.placeholder.com/300x450?text=Kapak+Yok"
+                />
+              </Card.Section>
+              <Text weight={500} mt="md" lineClamp={2}>{book.title}</Text>
+            </div>
+            <Text size="sm" color="dimmed" mt="xs">{book.author}</Text>
           </Card>
         ))}
       </SimpleGrid>
@@ -152,3 +169,4 @@ function BookListPage() {
 }
 
 export default BookListPage;
+

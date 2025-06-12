@@ -5,7 +5,9 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register.jsx';
 import BookListPage from './pages/BookList'; // Import the new page
 import MyCheckoutsPage from './pages/MyCheckoutsPage.jsx';
-
+import AdminPage from './pages/AdminPage.jsx';
+import AdminBooksPage from './pages/AdminBooksPage.jsx';
+import AdminRoute from './components/AdminRoute.jsx';
 
 function App() {
   return (

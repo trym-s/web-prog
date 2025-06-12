@@ -6,6 +6,7 @@ import RegisterPage from './pages/Register.jsx';
 import BookListPage from './pages/BookList'; // Import the new page
 import MyCheckoutsPage from './pages/MyCheckoutsPage.jsx';
 
+
 function App() {
   return (
     <Routes>
@@ -15,7 +16,11 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/" element={<BookListPage />} />
-          <Route path="/my-borrowed-books" element={<MyCheckoutsPage />} /> {/* 2. Yeni rotayı ekle */}
+          <Route path="/my-borrowed-books" element={<MyCheckoutsPage />} />
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/books" element={<AdminBooksPage />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

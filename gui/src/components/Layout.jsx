@@ -34,10 +34,18 @@ function Layout() {
 
         {/* ANA NAVİGASYON BAĞLANTILARI */}
         <AppShell.Section grow mt="md">
-          <NavLink label="Kitaplar" component={Link} to="/" />
-          {/* Eski NavLink girişleri kaldırıldı */}
-          <NavLink label="Ödünç Aldıklarım" component={Link} to="/my-borrowed-books" />
-          <NavLink label="Geçmiş İşlemlerim" component={Link} to="/transaction-history" />
+          {user?.role === 'admin' ? (
+            <>
+              <NavLink label="Kitaplar" component={Link} to="/admin/books" />
+              <NavLink label="Yönetim" component={Link} to="/admin" />
+            </>
+          ) : (
+            <>
+              <NavLink label="Kitaplar" component={Link} to="/" />
+              <NavLink label="Ödünç Aldıklarım" component={Link} to="/my-borrowed-books" />
+              <NavLink label="Geçmiş İşlemlerim" component={Link} to="/transaction-history" />
+            </>
+          )}
         </AppShell.Section>
 
         {/* ALT NAVİGASYON BAĞLANTILARI */}

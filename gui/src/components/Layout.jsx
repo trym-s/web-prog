@@ -14,14 +14,17 @@ function Layout() {
         width: 300,
         breakpoint: 'sm',
       }}
+      styles={{
+        main: { backgroundColor: 'var(--color-background)' },
+      }}
     >
       {/* HEADER KULLANIMI */}
-      <AppShell.Header p="xs">
+      <AppShell.Header p="xs" style={{ backgroundColor: 'var(--color-dark-2)', color: '#fff' }}>
         <Title order={2}>Kütüphane Yönetim Sistemi</Title>
       <Notifications /> {/* 2. Add Notifications component here */}
       </AppShell.Header>
       
-      <AppShell.Navbar p="xs">
+      <AppShell.Navbar p="xs" style={{ backgroundColor: 'var(--color-dark-1)', color: '#fff' }}>
         {/* Hoşgeldin Mesajı */}
         <AppShell.Section mt="xs" mb="md">
           {user ? (
@@ -43,7 +46,6 @@ function Layout() {
             <>
               <NavLink label="Kitaplar" component={Link} to="/" />
               <NavLink label="Ödünç Aldıklarım" component={Link} to="/my-borrowed-books" />
-              <NavLink label="Geçmiş İşlemlerim" component={Link} to="/transaction-history" />
             </>
           )}
         </AppShell.Section>

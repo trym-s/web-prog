@@ -45,7 +45,6 @@ const Book = {
     });
   },
 
-  // MODIFIED FUNCTION
   getAll: (options = {}) => {
     const { filters, pagination } = options;
     
@@ -64,6 +63,12 @@ const Book = {
         params.push(`%${filters.search}%`);
       }
     }
+if (filters?.availability) {
+      if (filters.availability === 'available') {
+        whereClauses.push(`available_quantity > 0`);
+      } else if (filters.availability === 'unavailable') {
+        whereClauses.push(`available_quantity = 0`);
+      }}
 
     if (whereClauses.length > 0) {
       const whereString = ` WHERE ${whereClauses.join(' AND ')}`;

@@ -41,23 +41,23 @@ const Checkout = {
       });
     });
   },
-   findByStudentId: (studentId) => {
-     const sql = `
-      SELECT 
-        C.id, C.checkout_date, C.due_date, C.return_date,
-        B.title as bookTitle, B.author as bookAuthor
-      FROM Checkouts C
-      JOIN Books B ON C.book_id = B.id
-      WHERE C.student_id = ?
-      ORDER BY C.checkout_date DESC
-    `;
-    return new Promise((resolve, reject) => {
-      db.all(sql, [studentId], (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      });
-    });
-   },
+  findByStudentId: (studentId) => {
+ const sql = `
+   SELECT
+     C.id, C.checkout_date, C.due_date, C.return_date,
+     B.title as bookTitle, B.author as bookAuthor, B.cover_image_url 
+   FROM Checkouts C
+   JOIN Books B ON C.book_id = B.id
+   WHERE C.student_id = ?
+   ORDER BY C.checkout_date DESC
+ `;
+ return new Promise((resolve, reject) => {
+  db.all(sql, [studentId], (err, rows) => {
+   if (err) reject(err);
+   else resolve(rows);
+  });
+ });
+},
   // Find a single, active checkout
   findActiveById: (id) => {
     const sql = `

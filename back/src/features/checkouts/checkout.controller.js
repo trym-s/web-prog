@@ -94,4 +94,5 @@ module.exports = {
   getAllCheckouts,
   createCheckout,
   returnBook,
+  getMyCheckouts,
 };

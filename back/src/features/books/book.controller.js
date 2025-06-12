@@ -6,6 +6,7 @@ const getAllBooks = async (req, res) => {
     const options = {
       filters: {
         search: req.query.search || null,
+        availability: req.query.availability || null,
       },
       pagination: {
         page: parseInt(req.query.page, 10) || 1,

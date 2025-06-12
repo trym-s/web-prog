@@ -77,6 +77,9 @@ function LoginPage() {
           <Button fullWidth mt="xl" type="submit" loading={loading}>
             Giriş Yap
           </Button>
+          <Button variant="subtle" fullWidth mt="sm" onClick={() => navigate('/register')}>
+            Kaydol
+          </Button>
         </Paper>
       </Container>
     </Center>

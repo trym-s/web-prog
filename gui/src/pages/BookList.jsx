@@ -9,8 +9,6 @@ import useDebounce from '../hooks/useDebounce';
 
 function BookListPage() {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [availabilityFilter, setAvailabilityFilter] = useState('all');
@@ -26,8 +24,6 @@ function BookListPage() {
   // useEffect (veri çekme) bloğu aynı kalabilir.
   useEffect(() => {
     const fetchBooks = async () => {
-      setLoading(true);
-      setError(null);
       const params = new URLSearchParams();
       params.append('search', debouncedSearchTerm);
       if (availabilityFilter !== 'all') {
@@ -40,9 +36,7 @@ function BookListPage() {
         const result = await response.json();
         setBooks(result.data || []);
       } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
+        console.error(e);
       }
     };
     fetchBooks();

@@ -145,7 +145,12 @@ function AdminPage() {
         <tbody>{bookRows}</tbody>
       </Table>
 
-      <Modal opened={opened} onClose={close} title="Kitap" centered>
+      <Modal opened={opened} onClose={close} title="Kitap" centered styles={{
+          inner: {
+            left: '50%',
+            transform: 'translateX(-50%)',
+          },
+        }}>
         <TextInput label="Başlık" value={form.title} onChange={handleFormChange('title')} required />
         <TextInput label="Yazar" value={form.author} onChange={handleFormChange('author')} required mt="sm" />
         <TextInput label="Adet" type="number" value={form.quantity} onChange={handleFormChange('quantity')} mt="sm" />

@@ -88,7 +88,7 @@ function AdminBooksPage() {
   };
 
   return (
-    <div>
+    <div >
       <Group position="apart" mb="md">
         <Title order={2}>Kitaplar</Title>
         <Button onClick={handleAdd}>Kitap Ekle</Button>
@@ -114,7 +114,12 @@ function AdminBooksPage() {
           </Card>
         ))}
       </SimpleGrid>
-      <Modal opened={opened} onClose={close} title="Kitap" centered>
+      <Modal opened={opened} onClose={close} title="Kitap" centered styles={{
+          inner: {
+            left: '50%',
+            transform: 'translateX(-50%)',
+          },
+        }} >
         <TextInput label="Başlık" value={form.title} onChange={handleFormChange('title')} required />
         <TextInput label="Yazar" value={form.author} onChange={handleFormChange('author')} mt="sm" required />
         <TextInput label="Adet" type="number" value={form.quantity} onChange={handleFormChange('quantity')} mt="sm" />

@@ -55,20 +55,18 @@ const Book = {
     const params = [];
     const whereClauses = [];
 
-    // Apply filters
-    if (filters) {
-      if (filters.search) {
-        whereClauses.push(`(title LIKE ? OR author LIKE ?)`);
-        params.push(`%${filters.search}%`);
-        params.push(`%${filters.search}%`);
-      }
+    if (filters?.search) {
+      whereClauses.push(`(title LIKE ? OR author LIKE ?)`);
+      params.push(`%${filters.search}%`);
+      params.push(`%${filters.search}%`);
     }
-if (filters?.availability) {
+ if (filters?.availability) {
       if (filters.availability === 'available') {
         whereClauses.push(`available_quantity > 0`);
       } else if (filters.availability === 'unavailable') {
         whereClauses.push(`available_quantity = 0`);
-      }}
+      }
+    }
 
     if (whereClauses.length > 0) {
       const whereString = ` WHERE ${whereClauses.join(' AND ')}`;

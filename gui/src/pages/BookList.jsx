@@ -50,7 +50,7 @@ function BookListPage() {
       // Sayfalama da eklenebilir: params.append('page', page);
 
       const apiUrl = `http://localhost:3000/api/books?${params.toString()}`;
-      
+            console.log(`Fetching from: ${apiUrl}`);
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('Kitaplar getirilirken bir hata oluştu.');

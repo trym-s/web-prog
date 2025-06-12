@@ -3,8 +3,32 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  --color-background-primary: #fdfcf9;
+  --color-text-primary: #333333;
+  --color-text-secondary: #556052;
+  --color-accent-main: #e5b769;
+  --color-accent-secondary: #d27957;
+
+}
+body {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
+h1, h2, h3 {
+  color: var(--color-text-primary);
+}
+
+.my-custom-card {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  background-color: var(--color-accent-main);
+  color: var(--color-text-primary); /* veya daha uygun bir metin rengi */
+}
 .logo {
   height: 6em;
   padding: 1.5em;

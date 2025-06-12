@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import App from './App.jsx';
-import '@mantine/core/styles.css'; // Import Mantine styles
+import '@mantine/core/styles.css';  
 import './index.css';
+import { AuthProvider } from './context/AuthContext'; 
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <BrowserRouter>
-        <App />
+        <AuthProvider>  {/* Wrap the App */}
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </MantineProvider>
   </React.StrictMode>

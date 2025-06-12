@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Header, Title, NavLink } from '@mantine/core';
+import { AppShell, Title, NavLink } from '@mantine/core';
 import { Outlet, Link } from 'react-router-dom'; // Import Outlet and Link
 
 function Layout() {

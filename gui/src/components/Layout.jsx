@@ -1,6 +1,6 @@
 import { AppShell, Title, NavLink } from '@mantine/core';
 import { Outlet, Link } from 'react-router-dom';
-
+import { Notifications } from '@mantine/notifications';
 function Layout() {
   return (
     <AppShell
@@ -14,9 +14,8 @@ function Layout() {
       {/* HEADER KULLANIMI */}
       <AppShell.Header p="xs">
         <Title order={2}>Kütüphane Yönetim Sistemi</Title>
+      <Notifications /> {/* 2. Add Notifications component here */}
       </AppShell.Header>
-
-      {/* NAVBAR KULLANIMI */}
       <AppShell.Navbar p="xs">
         <AppShell.Section mt="xs">
           <Title order={3} p="xs">Menü</Title>

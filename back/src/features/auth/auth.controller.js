@@ -37,8 +37,14 @@ const login = async (req, res) => {
     }
 
     // Create JWT
-    const payload = { userId: user.id, username: user.username, role: user.role };
-    const secret = process.env.JWT_SECRET || 'your-default-secret-key'; // IMPORTANT: Use environment variables
+ const payload = { 
+      userId: user.id, 
+      username: user.username, 
+      role: user.role,
+      studentId: user.student_id // ADDED
+    };    
+   
+    const secret = process.env.JWT_SECRET || 'your-default-secret-key'; 
     const token = jwt.sign(payload, secret, { expiresIn: '1h' }); // Token expires in 1 hour
 
     res.status(200).json({ message: 'Login successful', token });

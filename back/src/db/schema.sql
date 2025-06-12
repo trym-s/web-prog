@@ -12,6 +12,8 @@ CREATE TABLE Users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'student', -- Bu satırın varlığı önemli
+    student_id INTEGER UNIQUE REFERENCES Students(id) ON DELETE SET NULL, -- Ve bu satırın
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 
@@ -29,6 +31,9 @@ CREATE TABLE Books (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
+    description TEXT, -- ADDED
+    page_number INTEGER, -- ADDED
+    cover_image_url TEXT, -- ADDED
     isbn TEXT UNIQUE,
     quantity INTEGER NOT NULL DEFAULT 1,
     available_quantity INTEGER NOT NULL DEFAULT 1,

@@ -13,13 +13,14 @@ const getAllCheckouts = async (req, res) => {
 
 // Create a new checkout (Lend a book)
 const createCheckout = async (req, res) => {
+  // 1. dueDate'i req.body'den kaldırdık.
   const { studentId, bookId } = req.body;
-  if (!studentId || !bookId) {
+  if (!studentId || !bookId ) {
     return res.status(400).json({ message: 'studentId and bookId are required' });
   }
 
   try {
-    // 1. Check book availability
+    // 2. Kitap müsaitlik kontrolü (bu kısım aynı)
     const book = await Book.getById(bookId);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
@@ -28,13 +29,13 @@ const createCheckout = async (req, res) => {
       return res.status(400).json({ message: 'Book is not available for checkout' });
     }
 
-    // 2. Create checkout record (Due date: 15 days from now)
+    // 3. dueDate'i backend'de otomatik olarak hesaplıyoruz (15 gün sonrası)
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 15);
     const checkoutData = { studentId, bookId, dueDate: dueDate.toISOString() };
     const newCheckoutId = await Checkout.create(checkoutData);
 
-    // 3. Decrement available book quantity
+    // 4. Kitap adedini düşürme (bu kısım aynı)
     const updatedBookData = { ...book, available_quantity: book.available_quantity - 1 };
     await Book.update(bookId, updatedBookData);
     
@@ -44,7 +45,6 @@ const createCheckout = async (req, res) => {
     res.status(500).json({ message: 'Error creating checkout', error: error.message });
   }
 };
-
 const getMyCheckouts = async (req, res) => {
   // req.user comes from our verifyToken middleware
   const studentId = req.user.studentId;

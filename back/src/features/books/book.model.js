@@ -30,7 +30,7 @@ const Book = {
     });
   },
 
-   update: (id, data) => {
+  update: (id, data) => {
     const { title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity } = data;
     const sql = `
       UPDATE Books 
@@ -39,6 +39,16 @@ const Book = {
     `;
     return new Promise((resolve, reject) => {
       db.run(sql, [title, author, description, page_number, cover_image_url, isbn, quantity, available_quantity, id], function (err) {
+        if (err) reject(err);
+        else resolve(this.changes);
+      });
+    });
+  },
+
+  remove: (id) => {
+    const sql = 'DELETE FROM Books WHERE id = ?';
+    return new Promise((resolve, reject) => {
+      db.run(sql, [id], function (err) {
         if (err) reject(err);
         else resolve(this.changes);
       });
